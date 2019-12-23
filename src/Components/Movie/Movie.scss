@@ -1,7 +1,15 @@
 @import '../../assets//colors';
 
 .movie__content {
-    background-color: $colorYellow;
+    background-color: $colorDark;
     padding: 10px 20px;
-    color: $colorDark;
+    color: $colorYellow;
+    border-radius: 15px;
+    box-sizing: border-box;
+    margin: 10px 0;
+
+}
+
+.movie__content_image {
+    text-align: center;
 }

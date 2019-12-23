@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import './Header.scss';
-import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 import Axios from 'axios';
 import Loader from '../UI/Loader/Loader';
 
 
-const Header = ({selected, setSelected}) => {
+const Header = ({selected, setSelected, setError}) => {
     const [loading, setLoading] = useState(true);
     const [films, setFilms] = useState([]);
 
     const getData = () => {
-        Axios.get(`https://swapi.co/api/films`)
+        Axios.get(`https://swapi.co/api/films/`)
         .then(res => {
             let films = res.data.results.sort((a, b) => {
                 return Date.parse(a.release_date) - Date.parse(b.release_date)
@@ -18,7 +18,7 @@ const Header = ({selected, setSelected}) => {
             setFilms(films)
             setLoading(false);
         })
-        .catch(err => console.log(err))
+        .catch(err => setError(err))
     }
 
     const showActive = (film) => {

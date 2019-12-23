@@ -1,6 +1,5 @@
 import React from 'react';
 import './Movie.scss';
-import { Jumbotron, Container } from 'react-bootstrap';
 
 const Movie = ({crawl}) => {
     return (
@@ -8,7 +7,9 @@ const Movie = ({crawl}) => {
             {
                 !crawl
                 ?
-                    <h1>Gagas</h1>
+                    <div className="movie__content_image">
+                         <img src="./images/star-wars.png" alt="Star Wars Logo" />
+                    </div>
                 :
                     <p>{crawl}</p>
             }
