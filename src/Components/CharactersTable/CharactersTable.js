@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './CharactersTable.scss';
-import { Table } from 'react-bootstrap';
 import Axios from 'axios';
 import Loader from '../UI/Loader/Loader';
-import GenderView from '../UI/Loader/GenderView/GenderView';
-import HeightView from '../UI/Loader/HeightView/HeightView';
+import TableDrawer from './TableDrawer/TableDrawer';
 
 const CharactersTable = ({charactersLinks, id, setError}) => {
         const [characters, setCharacters] = useState([]);
@@ -30,7 +28,7 @@ const CharactersTable = ({charactersLinks, id, setError}) => {
         getCharacters();
     }, [id])
 
-    const filter = (type) => {
+    const filterAscending = (type) => {
         if(type === "name") {
             let people = [...characters];
             people.sort((a, b) => a.name.localeCompare(b.name));
@@ -42,41 +40,26 @@ const CharactersTable = ({charactersLinks, id, setError}) => {
         }
     }
 
-    const GetTotal = ({characters}) => {
-        let summary = 0;
-        characters.map(character => {
-            return summary += Number(character.height) || 0
-        });
-        return <HeightView total={summary} />
+    const filterDescending = (type) => {
+        if(type === "name") {
+            let people = [...characters];
+            people.sort((a, b) => b.name.localeCompare(a.name));
+            setCharacters(people);
+        } else {
+            let people = [...characters];
+            people.sort((a, b) => +b.height - +a.height);
+            setCharacters(people);
+        }
     }
 
     return (
                 !loading 
-                ?
-                    <Table striped bordered hover variant="dark">
-                        <thead>
-                            <tr>
-                                <th onClick={() => filter("name")}>Name</th>
-                                <th>Gender</th>
-                                <th onClick={() => filter("height")}>Height</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                characters.map((character, index) => {
-                                return  <tr key={`character${index}`}>
-                                            <td>{character.name}</td>
-                                            <td><GenderView gender={character.gender} /></td>
-                                            <td>{character.height}</td>
-                                        </tr>
-                                })
-                            }
-                            <tr>
-                                <td colSpan="2">{characters.length}</td>
-                                <td><GetTotal characters={characters} /></td>
-                            </tr>
-                        </tbody>
-                </Table>
+            ?
+                <TableDrawer 
+                    characters={characters}
+                    filterAscending={filterAscending}
+                    filterDescending={filterDescending}
+                />
             :
                 <Loader />
     )
